@@ -7,9 +7,9 @@ const router = express.Router();
 // GET DATA
 
 router.get("/", (req, res) => {
-  Proj.get(req.body)
+  Proj.get()
     .then(project => {
-      res.status(201).json(project);
+      res.status(201).json({ project });
     })
     .catch(error => {
       console.log(error);
@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
 
 // GET BY ID
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateProjectId, (req, res) => {
   Proj.getById(req.params.id)
     .then(proj => {
       if (proj) {
@@ -55,7 +55,7 @@ router.post("/", validateProject, (req, res) => {
 
 // DELETE
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateProjectId, (req, res) => {
   Proj.remove(req.params.id)
     .then(count => {
       if (count > 0) {
@@ -72,9 +72,9 @@ router.delete("/:id", (req, res) => {
     });
 });
 
-// PUT
+// PUT BY ID
 
-router.put("/:id", (req, res) => {
+router.put("/:id", validateProject, validateProjectId, (req, res) => {
   const changes = req.body;
   Proj.update(req.params.id, changes)
     .then(projects => {
@@ -109,6 +109,19 @@ function validateProject(req, res, next) {
   } else {
     next();
   }
+}
+
+function validateProjectId(req, res, next) {
+  const id = req.params.id;
+  Proj.get(id).then(project => {
+    if (project === null) {
+      res
+        .status(400)
+        .json({ error: "No project with this ID " + id + " found" });
+    } else {
+      next();
+    }
+  });
 }
 
 module.exports = router;
