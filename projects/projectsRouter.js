@@ -39,6 +39,14 @@ router.get("/:id", validateProjectId, (req, res) => {
     });
 });
 
+// GET PROJECT ACTIONS
+
+router.get("/:id/actions", (req, res) => {
+  Proj.getProjectActions(req.params.id, req.body).then(proj => {
+    res.status(201).json({ proj });
+  });
+});
+
 // POST DATA
 
 router.post("/", validateProject, (req, res) => {
