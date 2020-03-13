@@ -40,13 +40,23 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
-- [ ] Describe Middleware?
+  Express is like React, but for the back-end. It’s a library that allows us to write less code than we normally would for the back-end. It allows us to create RESTful APIs that works with JSON
+
+* [ ] Describe Middleware?
+
+  A middleware is a piece of function that takes in a request and response objects in order to trigger an action.
 
 - [ ] Describe a Resource?
 
+Everything is a resource, meaning, it’s an object filled with data to be operated on.
+
 - [ ] What can the API return to help clients know if a request was successful?
 
+Status codes!
+
 - [ ] How can we partition our application into sub-applications?
+
+Express Routers!
 
 ## Minimum Viable Product
 
