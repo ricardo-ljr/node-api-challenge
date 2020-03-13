@@ -3,10 +3,11 @@ const mappers = require("./mappers");
 
 module.exports = {
   get,
+  getById,
   insert,
   update,
   remove,
-  getProjectActions,
+  getProjectActions
 };
 
 function get(id) {
@@ -33,6 +34,10 @@ function get(id) {
       return projects.map(project => mappers.projectToBody(project));
     });
   }
+}
+
+function getById(id) {
+  return db("projects").where({ id: Number(id) });
 }
 
 function insert(project) {
