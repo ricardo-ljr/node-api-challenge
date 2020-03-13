@@ -19,6 +19,26 @@ router.get("/", (req, res) => {
     });
 });
 
+// GET BY ID
+
+router.get("/:id", (req, res) => {
+  Proj.getById(req.params.id)
+    .then(proj => {
+      if (proj) {
+        res.status(200).json(proj);
+      } else {
+        res
+          .status(404)
+          .json({ message: "The proj with the specified ID does not exist." });
+      }
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ error: "The proj information could not be retrieved." });
+    });
+});
+
 // POST DATA
 
 router.post("/", (req, res) => {
@@ -61,9 +81,9 @@ router.delete("/:id", (req, res) => {
 router.put("/:id", (req, res) => {
   const changes = req.body;
   Proj.update(req.params.id, changes)
-    .then(project => {
-      if (project) {
-        res.status(200).json(project);
+    .then(projects => {
+      if (projects) {
+        res.status(200).json(projects);
       } else if (!changes) {
         res.status(400).json({
           errorMessage: "Please provide name and description for the project."
