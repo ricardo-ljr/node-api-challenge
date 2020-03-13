@@ -41,14 +41,10 @@ router.get("/:id", (req, res) => {
 
 // POST DATA
 
-router.post("/", (req, res) => {
+router.post("/", validateProject, (req, res) => {
   Proj.insert(req.body)
     .then(project => {
-      if (project) {
-        res.status(201).json({ project });
-      } else {
-        res.status(400).json({ message: "Missing Items" });
-      }
+      res.status(200).json(project);
     })
     .catch(error => {
       res
@@ -106,10 +102,10 @@ router.put("/:id", (req, res) => {
 
 function validateProject(req, res, next) {
   const postData = req.body;
-  if (!postData.name) {
-    res.status(400).json({ message: "Missing project name" });
-  } else if (!postData.description) {
-    res.status(400).json({ message: "Missing description" });
+  if (!postData) {
+    res.status(400).json({ message: "Missing project data" });
+  } else if (!postData.name || !postData.description) {
+    res.status(400).json({ message: "Missing info, add name and description" });
   } else {
     next();
   }
