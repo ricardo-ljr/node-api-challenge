@@ -33,6 +33,36 @@ router.post("/", validateAction, validateActionID, (req, res) => {
     });
 });
 
+// DELETE
+
+router.delete("/:id", validateActionID, (req, res) => {
+  Action.remove(req.params.id)
+    .then(count => {
+      if (count > 0) {
+        res.status(200).json({ message: "All is gone" });
+      } else {
+        res.status(404).json({ message: "Action Not Found" });
+      }
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ message: "Something went wrong while deleting this action" });
+    });
+});
+
+// PUT
+
+router.put("/:id", validateAction, validateActionID, (req, res) => {
+  Action.update(req.params.id, req.body)
+    .then(update => {
+      res.status(200).json(update);
+    })
+    .catch(error => {
+      res.status(500).json({ message: "Couldn't Update Action" });
+    });
+});
+
 // ********************** CUSTOM MIDDLEWARES ********************** \\
 
 function validateAction(req, res, next) {
@@ -66,7 +96,6 @@ function validateActionID(req, res, next) {
       }
     })
     .catch(error => {
-      console.log("GET '/:id' error:", error);
       res.status(500).json({ error: "Error Id not found " });
     });
 }
